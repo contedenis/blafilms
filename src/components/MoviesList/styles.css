@@ -1,0 +1,44 @@
+.search-results {
+  display: grid;
+  grid-template-columns: 25% 50% 25%;
+  text-align: center;
+}
+
+.movies-list {
+  display: grid;
+  grid-template-columns: repeat(2, 50%);
+  width: 100%;
+}
+
+.movies-list__item {
+  background-color: #f1faee;
+  border-radius: 5px;
+  color: #e63946;
+  display: grid;
+  grid-template-columns: 25% 75%;
+  margin: 20px;
+  padding: 10px;
+}
+
+.movies-list img {
+  border-radius: 2px;
+  height: 111px;
+  width: 75px;
+}
+
+.movies-list__data {
+  display: grid;
+  grid-template-rows: 75% 25%;
+  padding-top: 10px;
+  text-align: left;
+}
+
+.movies-list__data-title {
+  color: #457b9d;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.movies-list__data-meta {
+  font-size: 14px;
+}

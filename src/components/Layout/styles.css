@@ -1,0 +1,12 @@
+.layout__content {
+  display: grid;
+  grid-template-columns: 25% 50% 25%;
+  text-align: center;
+}
+
+.layout__left,
+.layout__right {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
