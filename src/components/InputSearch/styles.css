@@ -1,0 +1,28 @@
+.input-search {
+  display: grid;
+  grid-template-columns: 25% 40% 10% 25%;
+  margin-top: 50px;
+}
+
+.input-search__input {
+  border: none;
+  border-radius: 5px 0 0 5px;
+  color: #457b9d;
+  font-size: 24px;
+  grid-column-start: 2;
+  line-height: 2;
+  padding: 10px;
+}
+
+.input-search__input:focus {
+  outline-color: #1d3557;
+}
+
+.input-search__button {
+  border: none;
+  background-color: #1d3557;
+  border-radius: 0 5px 5px 0;
+  color: #a8dadc;
+  cursor: pointer;
+  font-size: 24px;
+}

@@ -1,61 +1,63 @@
-import React, { useState, useEffect } from 'react'
-import './App.css'
-import placeholderImg from './placeholder.png'
-import { ReactComponent as ChevronLeft } from './chevron-left.svg'
-import { ReactComponent as ChevronRight } from './chevron-right.svg'
+import * as React from 'react'
+import Arrow from './components/Arrow'
+import EmptyState from './components/EmptyState'
+import ErrorState from './components/ErrorState'
+import InputSearch from './components/InputSearch'
+import Layout from './components/Layout'
+import LoadingState from './components/LoadingState'
+import MoviesList from './components/MoviesList'
+import useFetch from './hooks/useFetch'
 
 function App() {
-  const [searchResult, setSearchResult] = useState()
+  const [movie, setMovie] = React.useState('')
+  const [page, setPage] = React.useState(1)
+  const query = `&s=${movie}&page=${page}`
+  const { data, status } = useFetch(
+    `http://www.omdbapi.com/?apikey=a461e386${query}`,
+  )
+  const totalPages = Math.ceil(Number(data?.totalResults) / 10)
 
-  useEffect(() => {
-    const search = async () => {
-      const response = await fetch(
-        'http://www.omdbapi.com/?apikey=a461e386&s=king',
-      )
-
-      const data = await response.json()
-
-      if (!searchResult) {
-        setSearchResult(data)
-      }
+  function onClick(direccion) {
+    if (direccion === 'next' && page < totalPages) {
+      setPage(page => page + 1)
+    } else if (direccion === 'previous' && page !== 1) {
+      setPage(page => page - 1)
     }
-
-    search()
-  })
+  }
 
   return (
-    <div className="App">
-      <div className="search">
-        <input type="text" placeholder="Search..." />
-        <button>Search</button>
-      </div>
-      {!searchResult ? (
-        <p>No results yet</p>
-      ) : (
-        <div className="search-results">
-          <div className="chevron">
-            <ChevronLeft />
-          </div>
-          <div className="search-results-list">
-            {searchResult.Search.map(result => (
-              <div key={result.imdbID} className="search-item">
-                <img
-                  src={result.Poster === 'N/A' ? placeholderImg : result.Poster}
-                  alt="poster"
-                />
-                <div className="search-item-data">
-                  <div className="title">{result.Title}</div>
-                  <div className="meta">{`${result.Type} | ${result.Year}`}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="chevron">
-            <ChevronRight />
-          </div>
-        </div>
-      )}
-    </div>
+    <Layout>
+      <Layout.Top>
+        <InputSearch onClick={setMovie} />
+      </Layout.Top>
+      <Layout.Content>
+        {status === 'pending' ? (
+          <LoadingState />
+        ) : status === 'success' && data.Search ? (
+          <>
+            <Layout.Left>
+              <Arrow
+                direction="left"
+                disabled={page === 1}
+                onClick={() => onClick('previous')}
+              />
+            </Layout.Left>
+            <MoviesList results={data} />
+            <Layout.Right>
+              <Arrow
+                direction="right"
+                disabled={page === totalPages}
+                onClick={() => onClick('next')}
+              />
+            </Layout.Right>
+          </>
+        ) : status === 'success' && !data.Search ? (
+          <EmptyState />
+        ) : (
+          <ErrorState />
+        )}
+      </Layout.Content>
+    </Layout>
   )
 }
 

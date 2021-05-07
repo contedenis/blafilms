@@ -1,0 +1,20 @@
+.arrow {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+}
+
+.arrow-disabled {
+  pointer-events: none;
+}
+
+.arrow .icon {
+  fill: #1d3557;
+  height: 50px;
+  width: 50px;
+}
+
+.arrow .icon:hover {
+  fill: #e63946;
+}
